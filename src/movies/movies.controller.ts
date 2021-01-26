@@ -20,7 +20,7 @@ export class MoviesController {
   }
 
   @Get("/:id")
-  getOne(@Param("id") movieId: string): string {
+  getOne(@Param("id") movieId: string): Movie {
     return this.moviesService.getOne(movieId);
   }
 
