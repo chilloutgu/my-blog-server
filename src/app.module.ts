@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MoviesController } from './movies/movies.controller';
-import { MoviesService } from './movies/movies.service';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -15,7 +13,7 @@ import { UsersModule } from './users/users.module';
     "entities": ["dist/**/**.entity{.ts,.js}"],
     "synchronize": true
   }), UsersModule],
-  controllers: [MoviesController],
-  providers: [MoviesService],
+  controllers: [],
+  providers: []
 })
-export class AppModule { }
+export class AppModule {}
