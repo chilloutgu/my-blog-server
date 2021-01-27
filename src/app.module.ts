@@ -6,10 +6,10 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
-    "type": "mysql",
+    "type": "mariadb",
     "host": "localhost",
     "port": 3306,
-    "username": "root",
+    "username": "guya",
     "password": "1234",
     "database": "nestjs",
     "entities": ["dist/**/**.entity{.ts,.js}"],
