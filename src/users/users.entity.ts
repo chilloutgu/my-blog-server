@@ -4,12 +4,16 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column({nullable: false})
   username: string;
+
   @Column({nullable: false})
   password: string;
+
   @Column({nullable: false})
   name: string;
+
   @Column({nullable: false})
-  email: string;    
+  email: string;
 }
