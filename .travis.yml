@@ -1,0 +1,24 @@
+language:
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    -
+    -
+
+before_install:
+  -
+
+script:
+
+before_deploy:
+
+deploy:
+
+notifications:
+  email:
+    recipients:
+      - 'bbonggu92@gmail.com'
