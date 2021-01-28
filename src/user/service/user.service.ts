@@ -21,8 +21,8 @@ export class UserService {
 
   async update(user: User): Promise<void> {
     const foundUser = await this.userRepository.findOne(user.id);
-    foundUser.password = user.password;
-    foundUser.email = user.email;
+    foundUser.password = user.password ? user.password : foundUser.password;
+    foundUser.email = user.email ? user.email : foundUser.email;
 
     await this.userRepository.save(foundUser);
   }

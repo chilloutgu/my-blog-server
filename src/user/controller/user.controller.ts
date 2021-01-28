@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Delete, Body, Param, ParseIntPipe, HttpCode } from '@nestjs/common';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { UpdateUserDTO } from '../dto/update-user.dto';
 import { User } from '../entity/user.entity';
@@ -9,6 +9,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @HttpCode(201)
   public async create(@Body() createUserDTO: CreateUserDTO): Promise<void> {
     const user = createUserDTO.toEntity();
     await this.userService.create(user);
@@ -24,14 +25,16 @@ export class UserController {
     return await this.userService.findOne(id);
   }
 
-  @Patch(':id') 
+  @Patch(':id')
+  @HttpCode(200)
   public async update(@Param('id') id: number, @Body() updateUserDTO: UpdateUserDTO):Promise<void> {
     const user = updateUserDTO.toEntity();
     user.id = id;
     await this.userService.update(user);
   }
 
-  @Delete(':id') 
+  @Delete(':id')
+  @HttpCode(200) 
   public async delete(@Param('id') id: number): Promise<void> {
     await this.userService.delete(id);
   }
