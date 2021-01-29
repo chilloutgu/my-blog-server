@@ -10,7 +10,7 @@ export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
   async create(newUser: User): Promise<void> {
-    this.validateDuplicateUsername(newUser.username);
+    this.validateDuplicateUsername(newUser.getUsername());
     await this.userRepository.save(newUser);
   }
 
@@ -34,7 +34,11 @@ export class UserService {
   }
 
   private async validateDuplicateUsername(formUsername: string): Promise<void> {
-      const foundUser = await this.userRepository.findOne({username: formUsername});
+      const foundUser = await this.userRepository.findOne({
+        where: {
+          username: formUsername
+        }
+      });
       if(foundUser != undefined) {
         throw new Error(`already exist user, username : ${formUsername}`);
       }

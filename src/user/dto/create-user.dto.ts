@@ -11,13 +11,26 @@ export class CreateUserDTO {
   @IsEmail()
   private readonly email: string;
 
+  public constructor() {}
+
   public toEntity(): User {
-    const user = new User();
-    user.username = this.username;
-    user.password = this.password;
-    user.name = this.name;
-    user.email = this.email;
-    
-    return user;
+    const newUser =  User.createFromDTO(this);
+    return newUser;
+  }
+
+  public getUsername() {
+    return this.username;
+  }
+
+  public getPassword() {
+    return this.password;
+  }
+
+  public getName() {
+    return this.name;
+  }
+
+  public getEmail() {
+    return this.email;
   }
 }

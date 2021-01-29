@@ -2,39 +2,51 @@ import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGe
 import { Exclude } from "class-transformer";
 import { UpdateUserDTO } from "../dto/update-user.dto";
 import { genHashPassword } from "../util/user.util";
+import { CreateUserDTO } from "../dto/create-user.dto";
 
 @Entity()
 export class User {
 
   @PrimaryGeneratedColumn()
-  id: number;
+  private readonly id: number;
 
   @VersionColumn()
-  entityVersion: number;
+  private readonly entityVersion: number;
 
   @Column({nullable: false, unique: true})
-  username: string;
+  private readonly username: string;
 
   @Exclude()
   @Column({nullable: false})
-  password: string;
+  private password: string;
 
   @Column({nullable: false})
-  name: string;
+  private readonly name: string;
 
   @Column({nullable: false, unique: true})
-  email: string;
+  private email: string;
 
   @CreateDateColumn()
-  createdDate: Date;
+  private createdDate: Date;
 
   @UpdateDateColumn()
-  updatedDate: Date;
+  private updatedDate: Date;
 
   @BeforeInsert()
   private async encryptPassword(): Promise<void> {
     const hashPassword = await genHashPassword(this.password);
     this.password = hashPassword;
+  }
+  
+  private constructor(username: string, password: string, name: string, email: string) {
+    this.username = username;
+    this.password = password;
+    this.name = name;
+    this.email = email;
+  }
+
+  public static createFromDTO(createUserDTO: CreateUserDTO) {
+    return new User(createUserDTO.getUsername(), createUserDTO.getPassword(), createUserDTO.getName(), createUserDTO.getEmail());
   }
 
   public async changeFromDTO(updateUserDTO: UpdateUserDTO) {
@@ -46,5 +58,9 @@ export class User {
       if(updateUserDTO.hasEmail()) {
         this.email = updateUserDTO.getEmail();
       }
+  }
+  
+  public getUsername() {
+    return this.username;
   }
 }
