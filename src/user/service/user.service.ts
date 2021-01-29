@@ -7,8 +7,9 @@ import { User } from '../entity/user.entity';
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async create(user: User): Promise<void> {
-    await this.userRepository.save(user);
+  async create(newUser: User): Promise<void> {
+    this.isDuplicatedUsername(newUser.username);
+    await this.userRepository.save(newUser);
   }
 
   async findAll(): Promise<User[]> {
@@ -29,5 +30,12 @@ export class UserService {
 
   async delete(id: number): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  private async isDuplicatedUsername(formUsername: string): Promise<void> {
+      const foundUser = await this.userRepository.findOne({username: formUsername});
+      if(foundUser != undefined) {
+        throw new Error(`already exist user, username : ${formUsername}`);
+      }
   }
 }

@@ -11,17 +11,19 @@ export class UserController {
   @Post()
   @HttpCode(201)
   public async create(@Body() createUserDTO: CreateUserDTO): Promise<void> {
-    const user = createUserDTO.toEntity();
-    await this.userService.create(user);
+    const newUser = createUserDTO.toEntity();
+    await this.userService.create(newUser);
   }
 
   @Get()
-  public async findAll(): Promise<User[]> {
+  @HttpCode(200)
+  public async findAll(): Promise<User[] | undefined> {
       return await this.userService.findAll();
   }
 
-  @Get(':id') 
-  public async findOne(@Param('id') id: number): Promise<User> {
+  @Get(':id')
+  @HttpCode(200)
+  public async findOne(@Param('id') id: number): Promise<User | undefined> {
     return await this.userService.findOne(id);
   }
 
