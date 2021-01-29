@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Delete, Body, Param, ParseIntPipe, HttpCode } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Delete, Body, Param, ParseIntPipe, HttpCode, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { UpdateUserDTO } from '../dto/update-user.dto';
 import { User } from '../entity/user.entity';
@@ -17,12 +17,14 @@ export class UserController {
 
   @Get()
   @HttpCode(200)
+  @UseInterceptors(ClassSerializerInterceptor)
   public async findAll(): Promise<User[] | undefined> {
       return await this.userService.findAll();
   }
 
   @Get(':id')
   @HttpCode(200)
+  @UseInterceptors(ClassSerializerInterceptor)
   public async findOne(@Param('id') id: number): Promise<User | undefined> {
     return await this.userService.findOne(id);
   }
