@@ -4,17 +4,25 @@ import { User } from "../entity/user.entity";
 export class UpdateUserDTO {
   @IsOptional()
   @IsString()
-  readonly password?: string;
+  private readonly password?: string;
 
   @IsOptional()
   @IsEmail()
-  readonly email?: string;
+  private readonly email?: string;
 
-  public toEntity(): User {
-    const user = new User();
-    user.password = this.password ? this.password : undefined;
-    user.email = this.email ? this.email : undefined;
+  public getPassword() {
+    return this.password;
+  }
 
-    return user;
+  public getEmail() {
+    return this.email;
+  }
+
+  public hasPassword(): boolean {
+    return this.password ? true : false;
+  }
+
+  public hasEmail(): boolean {
+    return this.email ? true: false;
   }
 }

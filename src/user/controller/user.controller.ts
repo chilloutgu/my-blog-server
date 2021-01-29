@@ -32,9 +32,7 @@ export class UserController {
   @Patch(':id')
   @HttpCode(200)
   public async update(@Param('id') id: number, @Body() updateUserDTO: UpdateUserDTO):Promise<void> {
-    const user = updateUserDTO.toEntity();
-    user.id = id;
-    await this.userService.update(user);
+    await this.userService.update(id, updateUserDTO);
   }
 
   @Delete(':id')

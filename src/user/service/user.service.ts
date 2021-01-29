@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
+import * as bcrypt from 'bcrypt';
+import { UpdateUserDTO } from '../dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -20,10 +22,9 @@ export class UserService {
     return await this.userRepository.findOne(id);
   }
 
-  async update(user: User): Promise<void> {
-    const foundUser = await this.userRepository.findOne(user.id);
-    foundUser.password = user.password ? user.password : foundUser.password;
-    foundUser.email = user.email ? user.email : foundUser.email;
+  async update(id:number, updateUserDTO: UpdateUserDTO): Promise<void> {
+    const foundUser = await this.userRepository.findOne(id);
+    foundUser.changeFromDTO(updateUserDTO);
 
     await this.userRepository.save(foundUser);
   }

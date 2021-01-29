@@ -3,13 +3,13 @@ import { User } from "../entity/user.entity";
 
 export class CreateUserDTO {
   @IsString()
-  readonly username: string;
+  private readonly username: string;
   @IsString()
-  readonly password: string;
+  private readonly password: string;
   @IsString()
-  readonly name: string;
+  private readonly name: string;
   @IsEmail()
-  readonly email: string;
+  private readonly email: string;
 
   public toEntity(): User {
     const user = new User();

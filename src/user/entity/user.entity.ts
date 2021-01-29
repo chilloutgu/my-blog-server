@@ -1,6 +1,7 @@
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { Exclude } from "class-transformer";
-import * as bcrypt from 'bcrypt';
+import { UpdateUserDTO } from "../dto/update-user.dto";
+import { genHashPassword } from "../util/user.util";
 
 @Entity()
 export class User {
@@ -31,10 +32,19 @@ export class User {
   updatedDate: Date;
 
   @BeforeInsert()
-  @BeforeUpdate()
-  private async hashPassword(): Promise<void> {
-    const saltOrRounds = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(this.password, saltOrRounds);
+  private async encryptPassword(): Promise<void> {
+    const hashPassword = await genHashPassword(this.password);
     this.password = hashPassword;
+  }
+
+  public async changeFromDTO(updateUserDTO: UpdateUserDTO) {
+      if(updateUserDTO.hasPassword()) {
+        const hashPasword = await genHashPassword(updateUserDTO.getPassword());
+        this.password = hashPasword;
+      }
+
+      if(updateUserDTO.hasEmail()) {
+        this.email = updateUserDTO.getEmail();
+      }
   }
 }
