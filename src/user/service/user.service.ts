@@ -24,7 +24,7 @@ export class UserService {
 
   async update(id:number, updateUserDTO: UpdateUserDTO): Promise<void> {
     const foundUser = await this.userRepository.findOne(id);
-    foundUser.changeFromDTO(updateUserDTO);
+    await foundUser.changeFromDTO(updateUserDTO);
 
     await this.userRepository.save(foundUser);
   }
