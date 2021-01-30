@@ -9,8 +9,8 @@ export class BlogService {
 
   constructor(@InjectRepository(Article) private readonly articleRepository: Repository<Article>) {}
 
-  public async create(article: Article): Promise<void> {
-    await this.articleRepository.save(article);
+  public async create(newArticle: Article): Promise<void> {
+    await this.articleRepository.save(newArticle);
   }
 
   public async findAll(): Promise<Article[] | undefined> {
@@ -24,8 +24,8 @@ export class BlogService {
 
   public async modify(id: string, updateArticleDTO: UpdateArticleDTO): Promise<void> {
     const foundArticle = await this.articleRepository.findOne(id);
-    /* update logic */
-
+    foundArticle.changeFromDTO(updateArticleDTO);
+    
     await this.articleRepository.save(foundArticle);
   }
 

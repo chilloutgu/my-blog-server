@@ -1,5 +1,4 @@
 import { IsEmail, IsOptional, IsString } from "class-validator";
-import { User } from "../entity/user.entity";
 
 export class UpdateUserDTO {
   @IsOptional()
@@ -10,19 +9,23 @@ export class UpdateUserDTO {
   @IsEmail()
   private readonly email?: string;
 
-  public getPassword() {
-    return this.password;
+  public getPassword(): string {
+    if(this.password) {
+      return this.password;
+    } else {
+      throw new Error('password is undefined, you cannot get password for update');
+    }
   }
 
-  public getEmail() {
-    return this.email;
+  public getEmail(): string {
+    if(this.email) {
+      return this.email;
+    } else {
+      throw new Error('email is undefined, you cannot get password for update');
+    }
   }
 
-  public hasPassword(): boolean {
-    return this.password ? true : false;
-  }
+  public hasPassword(): boolean { return this.password ? true : false; }
 
-  public hasEmail(): boolean {
-    return this.email ? true: false;
-  }
+  public hasEmail(): boolean { return this.email ? true: false; }
 }

@@ -45,11 +45,11 @@ export class User {
     this.email = email;
   }
 
-  public static createFromDTO(createUserDTO: CreateUserDTO) {
+  public static createFromDTO(createUserDTO: CreateUserDTO): User {
     return new User(createUserDTO.getUsername(), createUserDTO.getPassword(), createUserDTO.getName(), createUserDTO.getEmail());
   }
 
-  public async changeFromDTO(updateUserDTO: UpdateUserDTO) {
+  public async changeFromDTO(updateUserDTO: UpdateUserDTO): Promise<void> {
       if(updateUserDTO.hasPassword()) {
         const hashPasword = await genHashPassword(updateUserDTO.getPassword());
         this.password = hashPasword;
@@ -62,5 +62,15 @@ export class User {
   
   public getUsername() {
     return this.username;
+  }
+}
+
+
+export class UserId {
+  @Column({name: 'user_id', nullable: false, length: 36})
+  private userId: string;
+
+  constructor(userId: string) {
+    this.userId = userId;
   }
 }

@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { ApiResponse, ResponseMessage } from 'src/shared/object/api.object';
 import { CreateArticleDTO } from '../dto/create-article.dto';
 import { UpdateArticleDTO } from '../dto/update-article.dto';
 import { Article } from '../entity/article.entity';
@@ -10,30 +11,40 @@ export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
   @Post()
-  public async create(@Body() createArticleDTO: CreateArticleDTO):Promise<void> {
-    /* change dto to entity */
-    const article = new Article();
-    await this.blogService.create(article);
+  @HttpCode(202)
+  public async create(@Body() createArticleDTO: CreateArticleDTO):Promise<ApiResponse<Article>> {
+    const newArticle = createArticleDTO.toEntity();
+    await this.blogService.create(newArticle);
+    return new ApiResponse<Article>(HttpStatus.CREATED, ResponseMessage.SUCCESS);
   }
 
   @Get()
-  public async findAll(): Promise<Article[] | undefined> {
-    return await this.blogService.findAll();
+  @HttpCode(200)
+  public async findAll(): Promise<ApiResponse<Article[]>> {
+    const foundArticles = await this.blogService.findAll();
+    return new ApiResponse<Article[]>(HttpStatus.OK, ResponseMessage.SUCCESS)
+      .setData(foundArticles);
   }
 
   @Get(':id')
-  public async findOne(@Param('id') id: string):Promise<Article> | undefined {
-
-    return await this.blogService.findOne(id);
+  @HttpCode(200)
+  public async findOne(@Param('id') id: string):Promise<ApiResponse<Article>> {
+    const foundArticle = await this.blogService.findOne(id);
+    return new ApiResponse<Article>(HttpStatus.OK, ResponseMessage.SUCCESS)
+      .setData(foundArticle);
   }
 
   @Patch(':id')
-  public async modify(@Param('id') id: string, @Body() updateArticleDTO: UpdateArticleDTO):Promise<void> {
+  @HttpCode(200)
+  public async modify(@Param('id') id: string, @Body() updateArticleDTO: UpdateArticleDTO):Promise<ApiResponse<Article>> {
     await this.blogService.modify(id, updateArticleDTO);
+    return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 
   @Delete(':id')
-  public async remove(@Param('id') id: string): Promise<void> {
+  @HttpCode(200)
+  public async remove(@Param('id') id: string): Promise<ApiResponse<Article>> {
     await this.blogService.remove(id);
+    return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 }
