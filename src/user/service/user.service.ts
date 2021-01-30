@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
-import * as bcrypt from 'bcrypt';
 import { UpdateUserDTO } from '../dto/update-user.dto';
 
 @Injectable()
@@ -22,14 +21,14 @@ export class UserService {
     return await this.userRepository.findOne(id);
   }
 
-  async update(id:number, updateUserDTO: UpdateUserDTO): Promise<void> {
+  async modify(id:number, updateUserDTO: UpdateUserDTO): Promise<void> {
     const foundUser = await this.userRepository.findOne(id);
     await foundUser.changeFromDTO(updateUserDTO);
 
     await this.userRepository.save(foundUser);
   }
 
-  async delete(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
 
@@ -39,7 +38,7 @@ export class UserService {
           username: formUsername
         }
       });
-      if(foundUser != undefined) {
+      if(foundUser !== undefined) {
         throw new Error(`already exist user, username : ${formUsername}`);
       }
   }

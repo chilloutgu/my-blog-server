@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { Exclude } from "class-transformer";
 import { UpdateUserDTO } from "../dto/update-user.dto";
 import { genHashPassword } from "../util/user.util";
@@ -7,11 +7,11 @@ import { CreateUserDTO } from "../dto/create-user.dto";
 @Entity()
 export class User {
 
-  @PrimaryGeneratedColumn()
-  private readonly id: number;
+  @PrimaryGeneratedColumn('uuid')
+  private readonly id: string;
 
-  @VersionColumn()
-  private readonly entityVersion: number;
+  @VersionColumn({name: 'version'})
+  private readonly version: number;
 
   @Column({nullable: false, unique: true})
   private readonly username: string;
@@ -26,11 +26,11 @@ export class User {
   @Column({nullable: false, unique: true})
   private email: string;
 
-  @CreateDateColumn()
-  private createdDate: Date;
+  @CreateDateColumn({name: "create_date"})
+  private createDate: Date;
 
-  @UpdateDateColumn()
-  private updatedDate: Date;
+  @UpdateDateColumn({name: "update_date"})
+  private updateDate: Date;
 
   @BeforeInsert()
   private async encryptPassword(): Promise<void> {

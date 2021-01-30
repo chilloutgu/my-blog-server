@@ -31,13 +31,13 @@ export class UserController {
 
   @Patch(':id')
   @HttpCode(200)
-  public async update(@Param('id') id: number, @Body() updateUserDTO: UpdateUserDTO):Promise<void> {
-    await this.userService.update(id, updateUserDTO);
+  public async modify(@Param('id') id: number, @Body() updateUserDTO: UpdateUserDTO):Promise<void> {
+    await this.userService.modify(id, updateUserDTO);
   }
 
   @Delete(':id')
   @HttpCode(200) 
-  public async delete(@Param('id') id: number): Promise<void> {
-    await this.userService.delete(id);
+  public async remove(@Param('id') id: number): Promise<void> {
+    await this.userService.remove(id);
   }
 }

@@ -11,8 +11,6 @@ export class CreateUserDTO {
   @IsEmail()
   private readonly email: string;
 
-  public constructor() {}
-
   public toEntity(): User {
     const newUser =  User.createFromDTO(this);
     return newUser;
