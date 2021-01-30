@@ -25,19 +25,19 @@ export class UserController {
   @Get(':id')
   @HttpCode(200)
   @UseInterceptors(ClassSerializerInterceptor)
-  public async findOne(@Param('id') id: number): Promise<User | undefined> {
+  public async findOne(@Param('id') id: string): Promise<User | undefined> {
     return await this.userService.findOne(id);
   }
 
   @Patch(':id')
   @HttpCode(200)
-  public async modify(@Param('id') id: number, @Body() updateUserDTO: UpdateUserDTO):Promise<void> {
+  public async modify(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO):Promise<void> {
     await this.userService.modify(id, updateUserDTO);
   }
 
   @Delete(':id')
   @HttpCode(200) 
-  public async remove(@Param('id') id: number): Promise<void> {
+  public async remove(@Param('id') id: string): Promise<void> {
     await this.userService.remove(id);
   }
 }
