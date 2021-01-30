@@ -5,7 +5,7 @@ export class ApiResponse<T> {
   private message: ResponseMessage;
   private data?: T | undefined;
 
-  public constructor(httpStatus: HttpStatus, message: ResponseMessage) {
+  constructor(httpStatus: HttpStatus, message: ResponseMessage) {
     this.httpStatus = httpStatus;
     this.message = message;
   }

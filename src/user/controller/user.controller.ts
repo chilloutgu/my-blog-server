@@ -5,7 +5,7 @@ import { UpdateUserDTO } from '../dto/update-user.dto';
 import { User } from '../entity/user.entity';
 import { UserService } from '../service/user.service';
 
-@Controller('api/users')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -37,7 +37,7 @@ export class UserController {
 
   @Patch(':id')
   @HttpCode(200)
-  public async modify(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO):Promise<ApiResponse<User>> {
+  public async modify(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO): Promise<ApiResponse<User>> {
     await this.userService.modify(id, updateUserDTO);
     return new ApiResponse<User>(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
