@@ -1,23 +1,9 @@
-language:
-
+language: node_js
+node_js:
+  - '12.13.0'
 branches:
   only:
     - master
-
-cache:
-  directories:
-    -
-    -
-
-before_install:
-  -
-
-script:
-
-before_deploy:
-
-deploy:
-
 notifications:
   email:
     recipients:
