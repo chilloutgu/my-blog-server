@@ -12,10 +12,10 @@ export class BlogController {
 
   @Post()
   @HttpCode(202)
-  public async create(@Body() createArticleDTO: CreateArticleDTO):Promise<ApiResponse<Article>> {
+  public async create(@Body() createArticleDTO: CreateArticleDTO):Promise<ApiResponse> {
     const newArticle = createArticleDTO.toEntity();
     await this.blogService.create(newArticle);
-    return new ApiResponse<Article>(HttpStatus.CREATED, ResponseMessage.SUCCESS);
+    return new ApiResponse(HttpStatus.CREATED, ResponseMessage.SUCCESS);
   }
 
   @Get()
@@ -36,14 +36,14 @@ export class BlogController {
 
   @Patch(':id')
   @HttpCode(200)
-  public async modify(@Param('id') id: string, @Body() updateArticleDTO: UpdateArticleDTO):Promise<ApiResponse<Article>> {
+  public async modify(@Param('id') id: string, @Body() updateArticleDTO: UpdateArticleDTO):Promise<ApiResponse> {
     await this.blogService.modify(id, updateArticleDTO);
     return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 
   @Delete(':id')
   @HttpCode(200)
-  public async remove(@Param('id') id: string): Promise<ApiResponse<Article>> {
+  public async remove(@Param('id') id: string): Promise<ApiResponse> {
     await this.blogService.remove(id);
     return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }

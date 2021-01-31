@@ -11,10 +11,10 @@ export class UserController {
 
   @Post()
   @HttpCode(201)
-  public async create(@Body() createUserDTO: CreateUserDTO): Promise<ApiResponse<User>> {
+  public async create(@Body() createUserDTO: CreateUserDTO): Promise<ApiResponse> {
     const newUser = createUserDTO.toEntity();
     await this.userService.create(newUser);
-    return new ApiResponse<User>(HttpStatus.CREATED, ResponseMessage.SUCCESS);
+    return new ApiResponse(HttpStatus.CREATED, ResponseMessage.SUCCESS);
   }
 
   @Get()
@@ -37,15 +37,15 @@ export class UserController {
 
   @Patch(':id')
   @HttpCode(200)
-  public async modify(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO): Promise<ApiResponse<User>> {
+  public async modify(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO): Promise<ApiResponse> {
     await this.userService.modify(id, updateUserDTO);
-    return new ApiResponse<User>(HttpStatus.OK, ResponseMessage.SUCCESS);
+    return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 
   @Delete(':id')
   @HttpCode(200) 
-  public async remove(@Param('id') id: string): Promise<ApiResponse<User>> {
+  public async remove(@Param('id') id: string): Promise<ApiResponse> {
     await this.userService.remove(id);
-    return new ApiResponse<User>(HttpStatus.OK, ResponseMessage.SUCCESS);
+    return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 }
