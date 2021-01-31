@@ -2,17 +2,19 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './user/user.module';
 import { BlogModule } from './blog/blog.module';
+import { ConfigModule } from '@nestjs/config';
+import { config } from './config/config';
+import { DatabaseConfig } from './config/database.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    "type": "mariadb",
-    "host": "localhost",
-    "port": 3306,
-    "username": "guya",
-    "password": "1234",
-    "database": "nestjs",
-    "entities": ["dist/**/**.entity{.ts,.js}"],
-    "synchronize": true
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config]
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: DatabaseConfig
   }), UsersModule, BlogModule],
   controllers: [],
   providers: []
