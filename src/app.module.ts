@@ -5,6 +5,8 @@ import { BlogModule } from './blog/blog.module';
 import { ConfigModule } from '@nestjs/config';
 import { config } from './config/config';
 import { DatabaseConfig } from './config/database.config';
+import { AuthenticationService } from './authentication/authentication.service';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { DatabaseConfig } from './config/database.config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: DatabaseConfig
-  }), UsersModule, BlogModule],
+  }), UsersModule, BlogModule, AuthenticationModule],
   controllers: [],
   providers: []
 })

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
@@ -38,8 +38,8 @@ export class UserService {
           username: formUsername
         }
       });
-      if(foundUser !== undefined) {
-        throw new Error(`already exist user, username : ${formUsername}`);
+      if(foundUser) {
+        throw new HttpException(`already exist user, username : ${formUsername}`, HttpStatus.NOT_FOUND);
       }
   }
 }
