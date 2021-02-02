@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Transaction } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { UpdateUserDTO } from '../dto/update-user.dto';
 
@@ -20,14 +20,14 @@ export class UserService {
   async findOne(id: string): Promise<User> {
     return await this.userRepository.findOne(id);
   }
-
+  
   async modify(id:string, updateUserDTO: UpdateUserDTO): Promise<void> {
     const foundUser = await this.userRepository.findOne(id);
     await foundUser.changeFromDTO(updateUserDTO);
 
     await this.userRepository.save(foundUser);
   }
-
+  
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
