@@ -8,38 +8,38 @@ import { UpdateUserDTO } from '../dto/update-user.dto';
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async create(newUser: User): Promise<void> {
+  async create(newUser: User): Promise<User> {
     this.validateDuplicateUsername(newUser.getUsername());
-    await this.userRepository.save(newUser);
+    return await this.userRepository.save(newUser);
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<User[] | undefined> {
     return await this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<User> {
-    return await this.userRepository.findOne(id);
+  async findByUsername(formUsername: string): Promise<User | undefined> {
+    return await this.userRepository.findOne({
+      where: {
+        username: formUsername
+      }
+    });
   }
   
-  async modify(id:string, updateUserDTO: UpdateUserDTO): Promise<void> {
-    const foundUser = await this.userRepository.findOne(id);
+  async modify(username: string, updateUserDTO: UpdateUserDTO): Promise<void> {
+    const foundUser = await this.userRepository.findOne(username);
     await foundUser.changeFromDTO(updateUserDTO);
 
     await this.userRepository.save(foundUser);
   }
   
-  async remove(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  async remove(username: string): Promise<void> {
+    await this.userRepository.delete(username);
   }
 
-  private async validateDuplicateUsername(formUsername: string): Promise<void> {
-      const foundUser = await this.userRepository.findOne({
-        where: {
-          username: formUsername
-        }
-      });
+  private async validateDuplicateUsername(username: string): Promise<void> {
+      const foundUser = await this.userRepository.findOne(username);
       if(foundUser) {
-        throw new HttpException(`already exist user, username : ${formUsername}`, HttpStatus.NOT_FOUND);
+        throw new HttpException(`already exist user, username : ${username}`, HttpStatus.NOT_FOUND);
       }
   }
 }

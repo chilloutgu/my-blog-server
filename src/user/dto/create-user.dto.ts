@@ -3,7 +3,7 @@ import { User } from "../entity/user.entity";
 
 export class CreateUserDTO {
  
-  @IsString()
+  @IsEmail()
   private readonly username: string;
  
   @IsString()
@@ -11,9 +11,7 @@ export class CreateUserDTO {
  
   @IsString()
   private readonly name: string;
- 
-  @IsEmail()
-  private readonly email: string;
+
 
   public toEntity(): User {
     const newUser =  User.createFromDTO(this);
@@ -25,6 +23,4 @@ export class CreateUserDTO {
   public getPassword() { return this.password; }
   
   public getName() { return this.name; }
-  
-  public getEmail() { return this.email; }
 }

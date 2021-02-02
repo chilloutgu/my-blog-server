@@ -8,10 +8,10 @@ import { CreateUserDTO } from "../dto/create-user.dto";
 export class User {
 
   @PrimaryGeneratedColumn('uuid')
-  private readonly id: string;
+  private readonly id?: string;
 
   @VersionColumn({name: 'version'})
-  private readonly version: number;
+  private readonly version?: number;
 
   @Column({nullable: false, unique: true})
   private readonly username: string;
@@ -23,14 +23,11 @@ export class User {
   @Column({nullable: false})
   private readonly name: string;
 
-  @Column({nullable: false, unique: true})
-  private email: string;
-
   @CreateDateColumn({name: "create_date"})
-  private createDate: Date;
+  private createDate?: Date;
 
   @UpdateDateColumn({name: "update_date"})
-  private updateDate: Date;
+  private updateDate?: Date;
 
   @BeforeInsert()
   private async encryptPassword(): Promise<void> {
@@ -38,15 +35,14 @@ export class User {
     this.password = hashPassword;
   }
   
-  private constructor(username: string, password: string, name: string, email: string) {
+  private constructor(username: string, password: string, name: string) {
     this.username = username;
     this.password = password;
     this.name = name;
-    this.email = email;
   }
 
   public static createFromDTO(createUserDTO: CreateUserDTO): User {
-    return new User(createUserDTO.getUsername(), createUserDTO.getPassword(), createUserDTO.getName(), createUserDTO.getEmail());
+    return new User(createUserDTO.getUsername(), createUserDTO.getPassword(), createUserDTO.getName());
   }
 
   public async changeFromDTO(updateUserDTO: UpdateUserDTO): Promise<void> {
@@ -54,14 +50,18 @@ export class User {
         const hashPasword = await genHashPassword(updateUserDTO.getPassword());
         this.password = hashPasword;
       }
+  }
 
-      if(updateUserDTO.hasEmail()) {
-        this.email = updateUserDTO.getEmail();
-      }
+  public changePasswordNull() {
+    this.password = null;
   }
   
   public getUsername() {
     return this.username;
+  }
+
+  public getPassword() {
+    return this.password;
   }
 }
 

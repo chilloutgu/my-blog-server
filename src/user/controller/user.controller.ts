@@ -29,23 +29,23 @@ export class UserController {
   @Get(':id')
   @HttpCode(200)
   @UseInterceptors(ClassSerializerInterceptor)
-  public async findOne(@Param('id') id: string): Promise<ApiResponse<User>> {
-    const foundUser = await this.userService.findOne(id);
+  public async findOne(@Param('username') username: string): Promise<ApiResponse<User>> {
+    const foundUser = await this.userService.findByUsername(username);
     return new ApiResponse<User>(HttpStatus.OK, ResponseMessage.SUCCESS)
       .setData(foundUser);
   }
 
   @Patch(':id')
   @HttpCode(200)
-  public async modify(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO): Promise<ApiResponse> {
-    await this.userService.modify(id, updateUserDTO);
+  public async modify(@Param('username') username: string, @Body() updateUserDTO: UpdateUserDTO): Promise<ApiResponse> {
+    await this.userService.modify(username, updateUserDTO);
     return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 
   @Delete(':id')
   @HttpCode(200) 
-  public async remove(@Param('id') id: string): Promise<ApiResponse> {
-    await this.userService.remove(id);
+  public async remove(@Param('username') username: string): Promise<ApiResponse> {
+    await this.userService.remove(username);
     return new ApiResponse(HttpStatus.OK, ResponseMessage.SUCCESS);
   }
 }
