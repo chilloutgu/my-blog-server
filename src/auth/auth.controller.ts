@@ -1,22 +1,18 @@
-import { Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { RequestWithUser } from './request-with-user.interface';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('sign-up')
-  @HttpCode(201)
-  async signUp() {
-
-  }
-
   @Post('sign-in')
   @HttpCode(200)
   @UseGuards(LocalAuthGuard)
-  async signIn() {
-
+  async signIn(@Req() request: RequestWithUser) {
+    /* authentication is done by LocalAuthGuard */
+    const validatedUser = request.user;
+    return validatedUser;
   }
-
 }

@@ -9,9 +9,9 @@ import { UserService } from '../service/user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('register')
   @HttpCode(201)
-  public async create(@Body() createUserDTO: CreateUserDTO): Promise<ApiResponse> {
+  public async register(@Body() createUserDTO: CreateUserDTO): Promise<ApiResponse> {
     const newUser = createUserDTO.toEntity();
     await this.userService.create(newUser);
     return new ApiResponse(HttpStatus.CREATED, ResponseMessage.SUCCESS);

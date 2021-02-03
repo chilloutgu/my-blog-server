@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(private readonly userService: UserService) {}
 
-  async signIn(formUsername: string, formPassword: string): Promise<User> {
+  async validateUser(formUsername: string, formPassword: string): Promise<User> {
     try {
       const foundUser = await this.userService.findByUsername(formUsername);
       this.validatePassword(formPassword, foundUser.getPassword());
