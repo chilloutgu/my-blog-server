@@ -8,13 +8,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(private readonly userService: UserService) {}
 
-  async signUp(createUserDTO: CreateUserDTO) {
-      const newUser = createUserDTO.toEntity();
-      const createdUser = await this.userService.create(newUser);
-      return createdUser;
-  }
-
-  async validateUser(formUsername: string, formPassword: string): Promise<User | undefined> {
+  async signIn(formUsername: string, formPassword: string): Promise<User> {
     try {
       const foundUser = await this.userService.findByUsername(formUsername);
       this.validatePassword(formPassword, foundUser.getPassword());
