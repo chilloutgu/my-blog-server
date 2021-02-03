@@ -39,7 +39,7 @@ export class UserService {
   private async validateDuplicateUsername(username: string): Promise<void> {
       const foundUser = await this.userRepository.findOne(username);
       if(foundUser) {
-        throw new HttpException(`already exist user, username : ${username}`, HttpStatus.NOT_FOUND);
+        throw new HttpException(`already exist user, username : ${username}`, HttpStatus.BAD_REQUEST);
       }
   }
 }

@@ -52,8 +52,8 @@ export class User {
       }
   }
 
-  public changePasswordNull() {
-    this.password = null;
+  public initPassword() {
+    this.password = undefined;
   }
   
   public getUsername() {
