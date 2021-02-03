@@ -1,12 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/entity/user.entity';
 import { UserService } from 'src/user/service/user.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { TokenPayload } from './token-payload.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService
+    ) {}
 
   async validateUser(formUsername: string, formPassword: string): Promise<User> {
     try {
@@ -27,5 +33,14 @@ export class AuthService {
       /* equal exception wtih above exception */
       throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
     }
+  }
+
+  getCookieWithJwtToken(userId: string) {
+    /* create token just as userId */
+    const payload: TokenPayload = { userId };
+    const token = this.jwtService.sign(payload);
+    
+    /* make cookie and return it */
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get<string>('JWT_EXPIRATION_TIME')}`;
   }
 }

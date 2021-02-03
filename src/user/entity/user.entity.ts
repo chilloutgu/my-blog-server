@@ -56,6 +56,10 @@ export class User {
     this.password = undefined;
   }
   
+  public getId() {
+    return this.id;
+  }
+
   public getUsername() {
     return this.username;
   }
